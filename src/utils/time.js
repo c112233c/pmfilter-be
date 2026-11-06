@@ -1,0 +1,9 @@
+import { HttpError } from './httpError.js';
+const P=/^(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?$/;
+const Q=/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?$/;
+const z=(x,n=2)=>String(x).padStart(n,'0');
+export function parseEventTime(v,f='event_time'){if(typeof v!=='string'||!v.trim())throw new HttpError(400,'VALIDATION_ERROR',f+' must be a date-time string');const m=v.trim().match(P)||v.trim().match(Q);if(!m)throw new HttpError(400,'VALIDATION_ERROR',f+' must use YYYY/MM/DD HH:mm or YYYY/MM/DD HH:mm:ss.SSS');const [,a,b,c,d,e,s='0',ms='0']=m;const [year,month,day,hour,minute,second,millisecond]=[a,b,c,d,e,s,ms.padEnd(3,'0')].map(Number);const value=new Date(Date.UTC(year,month-1,day,hour,minute,second,millisecond));if(value.getUTCFullYear()!=year||value.getUTCMonth()!=month-1||value.getUTCDate()!=day||value.getUTCHours()!=hour||value.getUTCMinutes()!=minute||value.getUTCSeconds()!=second||value.getUTCMilliseconds()!=millisecond)throw new HttpError(400,'VALIDATION_ERROR',f+' is not a valid date-time');return{year,month,day,hour,minute,second,millisecond,value};}
+export function toSqlUtc(v){return formatSqlLocal(v);}
+export function formatSqlLocal(v){const t=v instanceof Date?{year:v.getUTCFullYear(),month:v.getUTCMonth()+1,day:v.getUTCDate(),hour:v.getUTCHours(),minute:v.getUTCMinutes(),second:v.getUTCSeconds(),millisecond:v.getUTCMilliseconds()}:v;return z(t.year,4)+'-'+z(t.month)+'-'+z(t.day)+' '+z(t.hour)+':'+z(t.minute)+':'+z(t.second)+'.'+z(t.millisecond,3);}
+export function sqlUtcToIso(v){if(!v)return v;const m=String(v).match(Q);if(m){const[,y,mo,d,h,mi,s='00',ms='0']=m;return y+'/'+mo+'/'+d+' '+h+':'+mi+':'+s+'.'+ms.padEnd(3,'0');}return v instanceof Date?formatSqlLocal(v).replace(' ','T'):String(v);}
+export function formatSqlUtc(v){return formatSqlLocal(parseEventTime(v));}

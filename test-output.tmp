@@ -1,0 +1,133 @@
+
+> pmfilter-be@0.1.0 test
+> node --test
+
+✖ normalizes device names and UTC timestamps (2.3035ms)
+✔ rejects duplicate device names regardless of case or whitespace (0.7747ms)
+✖ rejects overlapping time windows (1.2835ms)
+✖ allows adjacent time windows (0.1927ms)
+✔ rejects date-time without timezone (0.2116ms)
+✖ PM check requires timezone and converts to UTC (0.2306ms)
+✖ accepts the requested display format as Thailand local time and preserves milliseconds (0.5611ms)
+✔ PM check accepts display format and stores the Thailand-local millisecond value (0.1948ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 3
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.5102
+
+✖ failing tests:
+
+test at tests\validation.test.js:11:1
+✖ normalizes device names and UTC timestamps (2.3035ms)
+  Error [HttpError]: time_windows[0].start_time must use YYYY/MM/DD HH:mm or YYYY/MM/DD HH:mm:ss.SSS
+      at parseEventTime (file:///D:/ai/pmfilter/pmfilter-be/src/utils/time.js:5:217)
+      at file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:40:15
+      at Array.map (<anonymous>)
+      at validatePmPayload (file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:36:40)
+      at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:12:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    status: 400,
+    code: 'VALIDATION_ERROR',
+    details: undefined
+  }
+
+test at tests\validation.test.js:23:1
+✖ rejects overlapping time windows (1.2835ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'VALIDATION_ERROR'
+  -   code: 'OVERLAPPING_TIME_WINDOWS'
+    }
+  
+      at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:29:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: HttpError: time_windows[0].start_time must use YYYY/MM/DD HH:mm or YYYY/MM/DD HH:mm:ss.SSS
+        at parseEventTime (file:///D:/ai/pmfilter/pmfilter-be/src/utils/time.js:5:217)
+        at file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:40:15
+        at Array.map (<anonymous>)
+        at validatePmPayload (file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:36:40)
+        at assert.throws.code (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:29:23)
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:29:10)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1201:25),
+    expected: { code: 'OVERLAPPING_TIME_WINDOWS' },
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\validation.test.js:32:1
+✖ allows adjacent time windows (0.1927ms)
+  Error [HttpError]: time_windows[0].start_time must use YYYY/MM/DD HH:mm or YYYY/MM/DD HH:mm:ss.SSS
+      at parseEventTime (file:///D:/ai/pmfilter/pmfilter-be/src/utils/time.js:5:217)
+      at file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:40:15
+      at Array.map (<anonymous>)
+      at validatePmPayload (file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:36:40)
+      at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:38:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12) {
+    status: 400,
+    code: 'VALIDATION_ERROR',
+    details: undefined
+  }
+
+test at tests\validation.test.js:46:1
+✖ PM check requires timezone and converts to UTC (0.2306ms)
+  Error [HttpError]: event_time must use YYYY/MM/DD HH:mm or YYYY/MM/DD HH:mm:ss.SSS
+      at parseEventTime (file:///D:/ai/pmfilter/pmfilter-be/src/utils/time.js:5:217)
+      at validateCheckPayload (file:///D:/ai/pmfilter/pmfilter-be/src/utils/validation.js:87:26)
+      at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:47:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    status: 400,
+    code: 'VALIDATION_ERROR',
+    details: undefined
+  }
+
+test at tests\validation.test.js:52:1
+✖ accepts the requested display format as Thailand local time and preserves milliseconds (0.5611ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '2026-10-01 22:00:00.456'
+  - '2026-10-01 15:00:00.456'
+                ^
+  
+      at TestContext.<anonymous> (file:///D:/ai/pmfilter/pmfilter-be/tests/validation.test.js:59:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '2026-10-01 22:00:00.456',
+    expected: '2026-10-01 15:00:00.456',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
